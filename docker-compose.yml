@@ -1,9 +1,25 @@
 # Reference : https://qiita.com/po3rin/items/9acd41ef428436335c97
 version: '3'
 services:
-    app:
+    api:
         build: .
         volumes:
             - ./:/go/src/github.com/naoki-kishi/go-api-sample
         ports:
-            - '8083:8083'
+            - '8080:8080'
+
+    db:
+        image: mysql:8.0
+        ports:
+            - '3306:3306'
+        volumes:
+            # 初期データを投入するSQLが格納されているdir
+            - ./db/mysql_init:/docker-entrypoint-initdb.d
+            # 永続化するときにマウントするdir
+            - ./db/mysql_data:/var/lib/mysql
+
+        environment:
+            MYSQL_DATABASE: go-api
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_USER: plus
+            MYSQL_PASSWORD: plus
