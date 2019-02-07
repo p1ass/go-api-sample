@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS `go-api`;
 USE `go-api`;
 
 CREATE TABLE IF NOT EXISTS entries(
