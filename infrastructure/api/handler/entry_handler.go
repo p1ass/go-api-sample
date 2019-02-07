@@ -3,12 +3,13 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
-	"github.com/naoki-kishi/go-api-sample/infrastructure/datastore"
+	"github.com/naoki-kishi/go-api-sample/infrastructure/persistance"
+	"github.com/naoki-kishi/go-api-sample/usecase/repository"
 	"net/http"
 )
 
 type entryHander struct {
-	entryRepository datastore.EntryRepository
+	entryRepository repository.EntryRepository
 }
 
 type EntryHander interface {
@@ -16,13 +17,13 @@ type EntryHander interface {
 	GetEntries(c *gin.Context)
 }
 
-func NewEntryHandler(eR datastore.EntryRepository) EntryHander {
+func NewEntryHandler(eR repository.EntryRepository) EntryHander {
 	return &entryHander{entryRepository: eR}
 }
 
 func (eH *entryHander) GetEntries(c *gin.Context) {
-	conn := datastore.NewSqlDB()
-	entryRepo := datastore.NewEntryRepository(conn)
+	conn := persistance.NewSqlDB()
+	entryRepo := persistance.NewEntryRepository(conn)
 
 	u := []*model.Entry{}
 

@@ -1,21 +1,17 @@
-package datastore
+package persistance
 
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
+	"github.com/naoki-kishi/go-api-sample/usecase/repository"
 )
 
 type entryRepository struct {
 	db *gorm.DB
 }
 
-type EntryRepository interface {
-	Store(entry *model.Entry) error
-	FindAll(entries []*model.Entry) ([]*model.Entry, error)
-}
-
-func NewEntryRepository(db *gorm.DB) EntryRepository {
+func NewEntryRepository(db *gorm.DB) repository.EntryRepository {
 	return &entryRepository{db}
 }
 

@@ -1,21 +1,17 @@
-package datastore
+package persistance
 
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
+	"github.com/naoki-kishi/go-api-sample/usecase/repository"
 )
 
 type tagRepository struct {
 	db *gorm.DB
 }
 
-type TagRepository interface {
-	Store(tag *model.Tag) error
-	FindAll(entries []*model.Tag) ([]*model.Tag, error)
-}
-
-func NewTagRepository(db *gorm.DB) TagRepository {
+func NewTagRepository(db *gorm.DB) repository.TagRepository {
 	return &tagRepository{db}
 }
 

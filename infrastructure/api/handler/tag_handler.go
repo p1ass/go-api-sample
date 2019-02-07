@@ -3,12 +3,13 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
-	"github.com/naoki-kishi/go-api-sample/infrastructure/datastore"
+	"github.com/naoki-kishi/go-api-sample/infrastructure/persistance"
+	"github.com/naoki-kishi/go-api-sample/usecase/repository"
 	"net/http"
 )
 
 type tagHander struct {
-	tagRepository datastore.TagRepository
+	tagRepository repository.TagRepository
 }
 
 type TagHander interface {
@@ -16,13 +17,13 @@ type TagHander interface {
 	GetTags(c *gin.Context)
 }
 
-func NewTagHandler(eR datastore.TagRepository) TagHander {
+func NewTagHandler(eR repository.TagRepository) TagHander {
 	return &tagHander{tagRepository: eR}
 }
 
 func (eH *tagHander) GetTags(c *gin.Context) {
-	conn := datastore.NewSqlDB()
-	tagRepo := datastore.NewTagRepository(conn)
+	conn := persistance.NewSqlDB()
+	tagRepo := persistance.NewTagRepository(conn)
 
 	u := []*model.Tag{}
 
