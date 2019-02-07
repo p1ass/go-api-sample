@@ -3,31 +3,27 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
-	"github.com/naoki-kishi/go-api-sample/infrastructure/persistance"
 	"github.com/naoki-kishi/go-api-sample/usecase/repository"
 	"net/http"
 )
 
-type tagHander struct {
+type tagHandler struct {
 	tagRepository repository.TagRepository
 }
 
-type TagHander interface {
+type TagHandler interface {
 	CreateTag(c *gin.Context)
 	GetTags(c *gin.Context)
 }
 
-func NewTagHandler(eR repository.TagRepository) TagHander {
-	return &tagHander{tagRepository: eR}
+func NewTagHandler(eR repository.TagRepository) TagHandler {
+	return &tagHandler{tagRepository: eR}
 }
 
-func (eH *tagHander) GetTags(c *gin.Context) {
-	conn := persistance.NewSqlDB()
-	tagRepo := persistance.NewTagRepository(conn)
-
+func (eH *tagHandler) GetTags(c *gin.Context) {
 	u := []*model.Tag{}
 
-	us, err := tagRepo.FindAll(u)
+	us, err := eH.tagRepository.FindAll(u)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -35,9 +31,8 @@ func (eH *tagHander) GetTags(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, us)
-
 }
 
-func (eH *tagHander) CreateTag(c *gin.Context) {
+func (eH *tagHandler) CreateTag(c *gin.Context) {
 	return
 }
