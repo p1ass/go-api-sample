@@ -20,19 +20,31 @@ func NewTagHandler(eR repository.TagRepository) TagHandler {
 	return &tagHandler{tagRepository: eR}
 }
 
-func (eH *tagHandler) GetTags(c *gin.Context) {
-	u := []*model.Tag{}
+func (tH *tagHandler) GetTags(c *gin.Context) {
+	t := []*model.Tag{}
 
-	us, err := eH.tagRepository.FindAll(u)
+	ts, err := tH.tagRepository.FindAll(t)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, us)
+	c.JSON(http.StatusOK, ts)
 }
 
-func (eH *tagHandler) CreateTag(c *gin.Context) {
-	return
+func (tH *tagHandler) CreateTag(c *gin.Context) {
+	tag := &model.Tag{}
+
+	if err := c.Bind(tag); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	if err := tH.tagRepository.Store(tag); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, tag)
 }

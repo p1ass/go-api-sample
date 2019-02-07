@@ -17,8 +17,10 @@ func main() {
 	tH := handler.NewTagHandler(tagRepo)
 
 	r.GET("/entries", eH.GetEntries)
+	r.POST("/entries", eH.CreateEntry)
 
 	r.GET("/tags", tH.GetTags)
+	r.POST("/tags", tH.CreateTag)
 
 	r.Run(":8080")
 }

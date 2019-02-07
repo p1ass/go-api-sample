@@ -21,18 +21,30 @@ func NewEntryHandler(eR repository.EntryRepository) EntryHandler {
 }
 
 func (eH *entryHandler) GetEntries(c *gin.Context) {
-	u := []*model.Entry{}
+	e := []*model.Entry{}
 
-	us, err := eH.entryRepository.FindAll(u)
+	es, err := eH.entryRepository.FindAll(e)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, us)
+	c.JSON(http.StatusOK, es)
 }
 
 func (eH *entryHandler) CreateEntry(c *gin.Context) {
-	return
+	entry := &model.Entry{}
+
+	if err := c.Bind(entry); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	if err := eH.entryRepository.Store(entry); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, entry)
 }
