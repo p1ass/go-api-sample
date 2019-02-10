@@ -6,7 +6,7 @@ import (
 
 type Entry struct {
 	ID        uint       `gorm:"primary_key" json:"id"`
-	Title     string     `json:"title" binding:"required"`
+	Title     string     `gorm:"not null" json:"title" binding:"required"`
 	CreatedAt time.Time  `json:"-"`
 	UpdatedAt *time.Time `json:"-"`
 }
