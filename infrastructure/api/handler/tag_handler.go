@@ -16,6 +16,7 @@ type TagHandler interface {
 	CreateTag(c *gin.Context)
 	GetTag(c *gin.Context)
 	GetTags(c *gin.Context)
+	UpdateTag(c *gin.Context)
 }
 
 func NewTagHandler(eR repository.TagRepository) TagHandler {
@@ -61,6 +62,28 @@ func (tH *tagHandler) CreateTag(c *gin.Context) {
 	}
 
 	if err := tH.tagRepository.Store(t); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, t)
+}
+
+func (tH *tagHandler) UpdateTag(c *gin.Context) {
+	idString := c.Param("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	t := &model.Tag{ID: id}
+	if err := c.Bind(t); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	if err := tH.tagRepository.Update(t); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}

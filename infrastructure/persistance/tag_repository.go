@@ -19,6 +19,11 @@ func (tR *tagRepository) Store(tag *model.Tag) error {
 	return tR.db.Save(tag).Error
 }
 
+func (tR *tagRepository) Update(tag *model.Tag) error {
+	// Save will include all fields when perform the Updating SQL, even it is not changed
+	return tR.db.Model(&model.Tag{ID: tag.ID}).Updates(tag).Error
+}
+
 func (tR *tagRepository) FindAll() ([]*model.Tag, error) {
 	tags := []*model.Tag{}
 

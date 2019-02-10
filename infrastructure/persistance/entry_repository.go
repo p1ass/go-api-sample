@@ -19,6 +19,11 @@ func (eR *entryRepository) Store(entry *model.Entry) error {
 	return eR.db.Save(entry).Error
 }
 
+func (eR *entryRepository) Update(entry *model.Entry) error {
+	// Save will include all fields when perform the Updating SQL, even it is not changed
+	return eR.db.Model(&model.Entry{ID: entry.ID}).Updates(entry).Error
+}
+
 func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
 	entries := []*model.Entry{}
 

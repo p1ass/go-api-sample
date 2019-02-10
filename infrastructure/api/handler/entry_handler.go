@@ -16,6 +16,7 @@ type EntryHandler interface {
 	CreateEntry(c *gin.Context)
 	GetEntries(c *gin.Context)
 	GetEntry(c *gin.Context)
+	UpdateEntry(c *gin.Context)
 }
 
 func NewEntryHandler(eR repository.EntryRepository) EntryHandler {
@@ -61,6 +62,28 @@ func (eH *entryHandler) CreateEntry(c *gin.Context) {
 	}
 
 	if err := eH.entryRepository.Store(e); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, e)
+}
+
+func (eH *entryHandler) UpdateEntry(c *gin.Context) {
+	idString := c.Param("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+	e := &model.Entry{ID: id}
+
+	if err := c.Bind(e); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	if err := eH.entryRepository.Update(e); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
