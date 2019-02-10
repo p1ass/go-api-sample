@@ -7,4 +7,5 @@ import (
 type TagRepository interface {
 	Store(tag *model.Tag) error
 	FindAll(entries []*model.Tag) ([]*model.Tag, error)
+	FindByID(id int) (*model.Tag, error)
 }

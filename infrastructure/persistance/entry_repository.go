@@ -27,3 +27,13 @@ func (eR *entryRepository) FindAll(entries []*model.Entry) ([]*model.Entry, erro
 
 	return entries, nil
 }
+
+func (eR *entryRepository) FindByID(id int) (*model.Entry, error) {
+	entry := model.Entry{ID: id}
+	err := eR.db.First(&entry).Error
+	if err != nil {
+		return nil, fmt.Errorf("SQL Error", err)
+	}
+
+	return &entry, nil
+}

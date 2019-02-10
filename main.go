@@ -18,9 +18,11 @@ func main() {
 
 	r.GET("/entries", eH.GetEntries)
 	r.POST("/entries", eH.CreateEntry)
+	r.GET("/entries/:id", eH.GetEntry)
 
 	r.GET("/tags", tH.GetTags)
 	r.POST("/tags", tH.CreateTag)
+	r.GET("/tags/:id", eH.GetEntry)
 
 	r.Run(":8080")
 }
