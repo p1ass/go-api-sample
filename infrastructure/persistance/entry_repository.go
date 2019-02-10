@@ -19,7 +19,9 @@ func (eR *entryRepository) Store(entry *model.Entry) error {
 	return eR.db.Save(entry).Error
 }
 
-func (eR *entryRepository) FindAll(entries []*model.Entry) ([]*model.Entry, error) {
+func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
+	entries := []*model.Entry{}
+
 	err := eR.db.Find(&entries).Error
 	if err != nil {
 		return nil, fmt.Errorf("SQL Error", err)

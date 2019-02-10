@@ -30,41 +30,40 @@ func (eH *entryHandler) GetEntry(c *gin.Context) {
 		return
 	}
 
-	es, err := eH.entryRepository.FindByID(id)
+	e, err := eH.entryRepository.FindByID(id)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, es)
+	c.JSON(http.StatusOK, e)
 }
 
 func (eH *entryHandler) GetEntries(c *gin.Context) {
-	e := []*model.Entry{}
 
-	es, err := eH.entryRepository.FindAll(e)
+	e, err := eH.entryRepository.FindAll()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, es)
+	c.JSON(http.StatusOK, e)
 }
 
 func (eH *entryHandler) CreateEntry(c *gin.Context) {
-	entry := &model.Entry{}
+	e := &model.Entry{}
 
-	if err := c.Bind(entry); err != nil {
+	if err := c.Bind(e); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	if err := eH.entryRepository.Store(entry); err != nil {
+	if err := eH.entryRepository.Store(e); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, entry)
+	c.JSON(http.StatusOK, e)
 }

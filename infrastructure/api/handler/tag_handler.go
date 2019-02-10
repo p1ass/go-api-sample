@@ -30,41 +30,40 @@ func (tH *tagHandler) GetTag(c *gin.Context) {
 		return
 	}
 
-	es, err := tH.tagRepository.FindByID(id)
+	t, err := tH.tagRepository.FindByID(id)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, es)
+	c.JSON(http.StatusOK, t)
 }
 
 func (tH *tagHandler) GetTags(c *gin.Context) {
-	t := []*model.Tag{}
 
-	ts, err := tH.tagRepository.FindAll(t)
+	t, err := tH.tagRepository.FindAll()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, ts)
+	c.JSON(http.StatusOK, t)
 }
 
 func (tH *tagHandler) CreateTag(c *gin.Context) {
-	tag := &model.Tag{}
+	t := &model.Tag{}
 
-	if err := c.Bind(tag); err != nil {
+	if err := c.Bind(t); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	if err := tH.tagRepository.Store(tag); err != nil {
+	if err := tH.tagRepository.Store(t); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, tag)
+	c.JSON(http.StatusOK, t)
 }

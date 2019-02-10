@@ -22,7 +22,7 @@ func main() {
 
 	r.GET("/tags", tH.GetTags)
 	r.POST("/tags", tH.CreateTag)
-	r.GET("/tags/:id", eH.GetEntry)
+	r.GET("/tags/:id", tH.GetTag)
 
 	r.Run(":8080")
 }

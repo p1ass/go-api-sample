@@ -19,13 +19,15 @@ func (tR *tagRepository) Store(tag *model.Tag) error {
 	return tR.db.Save(tag).Error
 }
 
-func (tR *tagRepository) FindAll(entries []*model.Tag) ([]*model.Tag, error) {
-	err := tR.db.Find(&entries).Error
+func (tR *tagRepository) FindAll() ([]*model.Tag, error) {
+	tags := []*model.Tag{}
+
+	err := tR.db.Find(&tags).Error
 	if err != nil {
 		return nil, fmt.Errorf("SQL Error", err)
 	}
 
-	return entries, nil
+	return tags, nil
 }
 
 func (tR *tagRepository) FindByID(id int) (*model.Tag, error) {
