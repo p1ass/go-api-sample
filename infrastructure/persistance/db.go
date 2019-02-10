@@ -9,7 +9,7 @@ import (
 func NewSqlDB() *gorm.DB {
 
 	connectionString := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Local",
+		"%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Local&charset=utf8mb4",
 		"plus",
 		"plus",
 		"db",
