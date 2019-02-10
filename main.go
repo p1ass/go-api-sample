@@ -20,11 +20,13 @@ func main() {
 	r.POST("/entries", eH.CreateEntry)
 	r.GET("/entries/:id", eH.GetEntry)
 	r.PUT("/entries/:id", eH.UpdateEntry)
+	r.DELETE("/entries/:id", eH.DeleteEntry)
 
 	r.GET("/tags", tH.GetTags)
 	r.POST("/tags", tH.CreateTag)
 	r.GET("/tags/:id", tH.GetTag)
 	r.PUT("/tags/:id", tH.UpdateTag)
+	r.DELETE("/tags/:id", tH.DeleteTag)
 
 	r.Run(":8080")
 }

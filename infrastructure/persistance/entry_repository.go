@@ -24,6 +24,10 @@ func (eR *entryRepository) Update(entry *model.Entry) error {
 	return eR.db.Model(&model.Entry{ID: entry.ID}).Updates(entry).Error
 }
 
+func (eR *entryRepository) Delete(entry *model.Entry) error {
+	return eR.db.Delete(entry).Error
+}
+
 func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
 	entries := []*model.Entry{}
 

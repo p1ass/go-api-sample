@@ -24,6 +24,10 @@ func (tR *tagRepository) Update(tag *model.Tag) error {
 	return tR.db.Model(&model.Tag{ID: tag.ID}).Updates(tag).Error
 }
 
+func (tR *tagRepository) Delete(tag *model.Tag) error {
+	return tR.db.Delete(tag).Error
+}
+
 func (tR *tagRepository) FindAll() ([]*model.Tag, error) {
 	tags := []*model.Tag{}
 

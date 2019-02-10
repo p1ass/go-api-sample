@@ -17,6 +17,7 @@ type TagHandler interface {
 	GetTag(c *gin.Context)
 	GetTags(c *gin.Context)
 	UpdateTag(c *gin.Context)
+	DeleteTag(c *gin.Context)
 }
 
 func NewTagHandler(eR repository.TagRepository) TagHandler {
@@ -89,4 +90,20 @@ func (tH *tagHandler) UpdateTag(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, t)
+}
+
+func (tH *tagHandler) DeleteTag(c *gin.Context) {
+	idString := c.Param("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	if err := tH.tagRepository.Delete(&model.Tag{ID: id}); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, gin.H{"message": "ok"})
 }
