@@ -31,7 +31,7 @@ func (eR *entryRepository) Delete(entry *model.Entry) error {
 func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
 	entries := []*model.Entry{}
 
-	err := eR.db.Find(&entries).Error
+	err := eR.db.Preload("Tags").Find(&entries).Error
 	if err != nil {
 		return nil, fmt.Errorf("SQL Error", err)
 	}
@@ -41,7 +41,7 @@ func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
 
 func (eR *entryRepository) FindByID(id int) (*model.Entry, error) {
 	entry := model.Entry{ID: id}
-	err := eR.db.First(&entry).Error
+	err := eR.db.Preload("Tags").First(&entry).Error
 	if err != nil {
 		return nil, fmt.Errorf("SQL Error", err)
 	}
