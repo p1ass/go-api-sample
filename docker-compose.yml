@@ -14,14 +14,12 @@ services:
         ports:
             - '3306:3306'
         volumes:
-            # 初期データを投入するSQLが格納されているdir
             - ./db/mysql_init:/docker-entrypoint-initdb.d
-            # 永続化するときにマウントするdir
             - ./db/mysql_data:/var/lib/mysql
             - ./db/config/charset.cnf:/etc/mysql/conf.d/charset.cnf
 
         environment:
             MYSQL_DATABASE: go-api
             MYSQL_ROOT_PASSWORD: password
-            MYSQL_USER: plus
-            MYSQL_PASSWORD: plus
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password

@@ -8,10 +8,11 @@ import (
 
 func NewSqlDB() *gorm.DB {
 
+	// When in production environment, you must read config from environment variables;
 	connectionString := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Local&charset=utf8mb4",
-		"plus",
-		"plus",
+		"user",
+		"password",
 		"db",
 		"3306",
 		"go-api",
