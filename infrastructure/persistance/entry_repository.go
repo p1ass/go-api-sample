@@ -15,6 +15,16 @@ func NewEntryRepository(db *gorm.DB) repository.EntryRepository {
 	return &entryRepository{db}
 }
 
+func (eR *entryRepository) FindByID(id int) (*model.Entry, error) {
+	entry := model.Entry{ID: id}
+	err := eR.db.Preload("Tags").First(&entry).Error
+	if err != nil {
+		return nil, fmt.Errorf("SQL Error", err)
+	}
+
+	return &entry, nil
+}
+
 func (eR *entryRepository) Store(entry *model.Entry) error {
 	return eR.db.Save(entry).Error
 }
@@ -37,14 +47,4 @@ func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
 	}
 
 	return entries, nil
-}
-
-func (eR *entryRepository) FindByID(id int) (*model.Entry, error) {
-	entry := model.Entry{ID: id}
-	err := eR.db.Preload("Tags").First(&entry).Error
-	if err != nil {
-		return nil, fmt.Errorf("SQL Error", err)
-	}
-
-	return &entry, nil
 }

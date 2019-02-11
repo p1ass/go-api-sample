@@ -13,7 +13,7 @@ func main() {
 	entryRepo := persistance.NewEntryRepository(conn)
 	tagRepo := persistance.NewTagRepository(conn)
 
-	eH := handler.NewEntryHandler(entryRepo)
+	eH := handler.NewEntryHandler(entryRepo, tagRepo)
 	tH := handler.NewTagHandler(tagRepo)
 
 	r.GET("/entries", eH.GetEntries)

@@ -10,6 +10,7 @@ import (
 
 type entryHandler struct {
 	entryRepository repository.EntryRepository
+	tagRepository   repository.TagRepository
 }
 
 type EntryHandler interface {
@@ -20,8 +21,8 @@ type EntryHandler interface {
 	DeleteEntry(c *gin.Context)
 }
 
-func NewEntryHandler(eR repository.EntryRepository) EntryHandler {
-	return &entryHandler{entryRepository: eR}
+func NewEntryHandler(eR repository.EntryRepository, tR repository.TagRepository) EntryHandler {
+	return &entryHandler{entryRepository: eR, tagRepository: tR}
 }
 
 func (eH *entryHandler) GetEntry(c *gin.Context) {
@@ -62,6 +63,11 @@ func (eH *entryHandler) CreateEntry(c *gin.Context) {
 		return
 	}
 
+	if err := eH.tagRepository.FindOrCreateAll(e.Tags); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
 	if err := eH.entryRepository.Store(e); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
@@ -84,6 +90,11 @@ func (eH *entryHandler) UpdateEntry(c *gin.Context) {
 		return
 	}
 
+	if err := eH.tagRepository.FindOrCreateAll(e.Tags); err != nil {
+		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
+		return
+	}
+
 	if err := eH.entryRepository.Update(e); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
@@ -100,7 +111,7 @@ func (eH *entryHandler) DeleteEntry(c *gin.Context) {
 		return
 	}
 
-	if err := eH.entryRepository.Update(&model.Entry{ID: id}); err != nil {
+	if err := eH.entryRepository.Delete(&model.Entry{ID: id}); err != nil {
 		c.JSON(http.StatusBadRequest, model.ResponseError{Message: err.Error()})
 		return
 	}
