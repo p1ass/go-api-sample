@@ -8,6 +8,7 @@ import (
 
 func main() {
 	conn := persistance.NewSQLDB()
+	defer conn.Close()
 	entryRepo := persistance.NewEntryRepository(conn)
 	tagRepo := persistance.NewTagRepository(conn)
 
