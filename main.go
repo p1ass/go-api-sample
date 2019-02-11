@@ -7,8 +7,6 @@ import (
 )
 
 func main() {
-	r := gin.Default()
-
 	conn := persistance.NewSqlDB()
 	entryRepo := persistance.NewEntryRepository(conn)
 	tagRepo := persistance.NewTagRepository(conn)
@@ -16,17 +14,21 @@ func main() {
 	eH := handler.NewEntryHandler(entryRepo, tagRepo)
 	tH := handler.NewTagHandler(tagRepo)
 
-	r.GET("/entries", eH.GetEntries)
-	r.POST("/entries", eH.CreateEntry)
-	r.GET("/entries/:id", eH.GetEntry)
-	r.PUT("/entries/:id", eH.UpdateEntry)
-	r.DELETE("/entries/:id", eH.DeleteEntry)
+	r := gin.Default()
 
-	r.GET("/tags", tH.GetTags)
-	r.POST("/tags", tH.CreateTag)
-	r.GET("/tags/:id", tH.GetTag)
-	r.PUT("/tags/:id", tH.UpdateTag)
-	r.DELETE("/tags/:id", tH.DeleteTag)
+	entriesGroup := r.Group("/entries")
+	entriesGroup.GET("", eH.GetEntries)
+	entriesGroup.POST("", eH.CreateEntry)
+	entriesGroup.GET(":id", eH.GetEntry)
+	entriesGroup.PUT(":id", eH.UpdateEntry)
+	entriesGroup.DELETE(":id", eH.DeleteEntry)
+
+	tagsGroup := r.Group("/tags")
+	tagsGroup.GET("", tH.GetTags)
+	tagsGroup.POST("", tH.CreateTag)
+	tagsGroup.GET(":id", tH.GetTag)
+	tagsGroup.PUT(":id", tH.UpdateTag)
+	tagsGroup.DELETE(":id", tH.DeleteTag)
 
 	r.Run(":8080")
 }
