@@ -1,7 +1,6 @@
 package persistance
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
 	"github.com/naoki-kishi/go-api-sample/usecase/repository"
@@ -11,6 +10,7 @@ type entryRepository struct {
 	db *gorm.DB
 }
 
+// NewEntryRepository creates a repository using MySQL for datasotre.
 func NewEntryRepository(db *gorm.DB) repository.EntryRepository {
 	return &entryRepository{db}
 }
@@ -19,7 +19,7 @@ func (eR *entryRepository) FindByID(id int) (*model.Entry, error) {
 	entry := model.Entry{ID: id}
 	err := eR.db.Preload("Tags").First(&entry).Error
 	if err != nil {
-		return nil, fmt.Errorf("SQL Error", err)
+		return nil, err
 	}
 
 	return &entry, nil
@@ -43,7 +43,7 @@ func (eR *entryRepository) FindAll() ([]*model.Entry, error) {
 
 	err := eR.db.Preload("Tags").Find(&entries).Error
 	if err != nil {
-		return nil, fmt.Errorf("SQL Error", err)
+		return nil, err
 	}
 
 	return entries, nil

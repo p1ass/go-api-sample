@@ -1,7 +1,6 @@
 package persistance
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/naoki-kishi/go-api-sample/domain/model"
 	"github.com/naoki-kishi/go-api-sample/usecase/repository"
@@ -11,6 +10,7 @@ type tagRepository struct {
 	db *gorm.DB
 }
 
+// NewTagRepository creates a repository using MySQL for datasotre.
 func NewTagRepository(db *gorm.DB) repository.TagRepository {
 	return &tagRepository{db}
 }
@@ -19,7 +19,7 @@ func (tR *tagRepository) FindByID(id int) (*model.Tag, error) {
 	tag := model.Tag{ID: id}
 	err := tR.db.First(&tag).Error
 	if err != nil {
-		return nil, fmt.Errorf("SQL Error", err)
+		return nil, err
 	}
 
 	return &tag, nil
@@ -43,7 +43,7 @@ func (tR *tagRepository) FindAll() ([]*model.Tag, error) {
 
 	err := tR.db.Find(&tags).Error
 	if err != nil {
-		return nil, fmt.Errorf("SQL Error", err)
+		return nil, err
 	}
 
 	return tags, nil
@@ -53,7 +53,7 @@ func (tR *tagRepository) FindOrCreateAll(tags []*model.Tag) error {
 	for _, t := range tags {
 		err := tR.db.FirstOrCreate(t, &t).Error
 		if err != nil {
-			return fmt.Errorf("SQL Error", err)
+			return err
 		}
 	}
 
