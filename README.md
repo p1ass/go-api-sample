@@ -19,12 +19,12 @@ docker-compose up
 #### Response example
 ```json
 {
-  id: 1,
-  title: "entry1",
-  tags: [
+  "id": 1,
+  "title": "entry1",
+  "tags": [
     {
-      id: 1,
-      name: "tag1"
+      "id": 1,
+      "name": "tag1"
     }
   ]
 }
@@ -44,11 +44,11 @@ If you want to create relations with tags, you don't have to include tag id.
 Request example
 ```json
 {
-  id: 1,
-  title: "entry1",
-  tags: [
+  "id": 1,
+  "title": "entry1",
+  "tags": [
     {
-      name: "tag1"
+      "name": "tag1"
     }
   ]
 }
@@ -66,8 +66,8 @@ Request example
 #### Response example
 ```json
 {
-  id: 1,
-  name: "tag1"
+  "id": 1,
+  "name": "tag1"
 }
 ```
 
