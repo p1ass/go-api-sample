@@ -6,9 +6,10 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-func NewSqlDB() *gorm.DB {
+// NewSQLDB creates a connection to MySQL server.
+func NewSQLDB() *gorm.DB {
 
-	// When in production environment, you must read config from environment variables;
+	// In production environment, you must read config from environment variables.
 	connectionString := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Local&charset=utf8mb4",
 		"user",
