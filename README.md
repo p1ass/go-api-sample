@@ -3,7 +3,7 @@
 ## Abstract
 - Many to Many Web API Server Sample
 - Web Framework : Gin (https://github.com/gin-gonic/gin)
-- OR Mapper : GORM (https://github.com/jinzhu/gorm)
+- ORM : GORM (https://github.com/jinzhu/gorm)
 
 ## Getting Started
 ```
@@ -83,7 +83,7 @@ Request example
 #### Update a tag
 `PUT /tags/:id`
 
-#### Delete a tags
+#### Delete a tag
 `DELETE /tags/:id`
 
 
