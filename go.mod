@@ -2,7 +2,7 @@ module github.com/naoki-kishi/go-api-sample
 
 require (
 	github.com/gin-contrib/sse v0.0.0-20190125020943-a7658810eb74 // indirect
-	github.com/gin-gonic/gin v1.3.0
+	github.com/gin-gonic/gin v1.6.3
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/golang/protobuf v1.2.0 // indirect
 	github.com/jinzhu/gorm v1.9.2
